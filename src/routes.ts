@@ -1,39 +1,57 @@
-import { Router } from 'express';
+import { Router } from "express";
 
-// Inicialização do router
+// Inicializa o router
 const routes = Router();
 
-// Rota inical para verificar se p servodpr está rodando0
-routes.get('/', (request, response) => {
-    return response.status(200).json({ mensagem: "Hello World!" });
-
-}); 
-routes.get("/number", (request, response) => {
-    const randomNumber = Math.floor(Math.random() * 100);
-    return response.status(200).json({ randomNumber });
+// Rota inicial para verificar se o servidor está rodando
+routes.get("/", (request, response) => {
+  return response.status(200).json({ message: "Hello World!" });
 });
 
-routes.get("/fibonacci/:quantidade", (request, response) => {
-    const quantidade = Number(request.params.quantidade);
+routes.post("/aluno", (request, response) => {
+  const { nome, cpf, idade, media } = request.body;
 
-    const sequencia = [0, 1];
+  const status = media > 6 ? "Aprovado" : "Reprovado";
 
-    for (let i = 2; i <= quantidade; i += 1) {
-        sequencia.push(sequencia[i - 1] + sequencia[i - 2]);
-    }
+  return response.status(201).json({
+    nome,
+    cpf,
+    idade,
+    status,
+  })
+});
+routes.put("/aluno/:id", (request, response) => {
+  const alunos = [
+    { nome: "joão", idade: 20 },
+    { nome: "maria", idade: 22 },
+    { nome: "pedro", idade: 19 },
+    { nome: "ana", idade: 21 },
+  ];
+  
+  const { id } = request.params;
+  const { nome } = request.body;
 
-    return response.status(200).json(sequencia);
+  const aluno = alunos[+id];
+  aluno.nome = nome;
+
+  return response.status(200).json(aluno);
+
+
 });
 
-routes.get("/fatorial/:quantidade", (request, response) => {
-    const quantidade = Number(request.params.quantidade);
-    let fatorial = 1;
+routes.delete("/aluno/:id", (request, response) => {
+  const alunos = [
+    { nome: "joão", idade: 20 },
+    { nome: "maria", idade: 22 },
+    { nome: "pedro", idade: 19 },
+    { nome: "ana", idade: 21 },
+  ];
 
-    for (let i = 1; i <= quantidade; i += 1) {
-        fatorial *= i;
-    }
+    const { id } = request.params;
+    const novalista = alunos.splice(+id, 1);
 
-    return response.status(200).json(fatorial);
+    return response.status(200).json(alunos);
+
 });
 
-export default routes
+export default routes;
