@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { prisma } from "../../config/prisma";
-import { handlerErrors } from "../helpers/handlerErrors";
+import { handleErrors } from "../helpers/handleErrors";
 
 export default {
   list: async (request: Request, response: Response) => {
@@ -13,7 +13,7 @@ export default {
 
       return response.status(200).json(alunos);
     } catch (e) {
-      return handlerErrors(e, response);
+      return handleErrors(e, response);
     }
   },
 
@@ -31,7 +31,7 @@ export default {
 
       return response.status(200).json(aluno);
     } catch (e) {
-      return handlerErrors(e, response);
+      return handleErrors(e, response);
     }
   },
 
@@ -56,7 +56,7 @@ export default {
       
       return response.status(201).json(aluno);
     } catch (e) {
-      return handlerErrors(e, response);
+      return handleErrors(e, response);
     }
   },
    update: async (request: Request, response: Response) => {
@@ -84,10 +84,28 @@ export default {
 
           return response.status(200).json(aluno);
     } catch (e) {
-      return handlerErrors(e, response);
+      return handleErrors(e, response);
     }
   },
-};
+
+
+  delete: async (request: Request, response: Response) => {
+    try {
+      const { id } = request.params;
+
+      const aluno = await prisma.aluno.delete({
+        where: {
+          id: +id,
+        },
+      });
+
+      return response.status(200).json(aluno);
+    } catch (e) {
+      return handleErrors(e, response);
+    }
+  },
+
+}
 
 
 /*  async (request: Request, response: Response) => {
