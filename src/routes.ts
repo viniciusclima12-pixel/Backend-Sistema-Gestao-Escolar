@@ -4,6 +4,7 @@ import cursoController from "./controllers/curso";
 import matriculaController from "./controllers/matriculas";
 import funcionarioController from "./controllers/funcionario";
 
+
 // Inicializa o router
 const routes = Router();
 routes.get("/alunos", alunoController.list);
